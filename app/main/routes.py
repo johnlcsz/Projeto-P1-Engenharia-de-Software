@@ -6,6 +6,6 @@ main = Blueprint('main', __name__)
 def index():
 
     if session.get('usuario'):
-        return redirect(url_for('usuario.pg-principal'))
+        return redirect(url_for('usuario.pg_principal'))
 
     return render_template('index.html')
