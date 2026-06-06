@@ -23,8 +23,8 @@
             </div>
         
             {% if session.get('usuario') %}
-                <a href="{{ url_for('usuario.perfil') }}" class="nav-link">perfil</a>
-                <a href="{{ url_for('usuario.logout') }}" class="btn-outline">sair</a>
+                <a href="#" class="nav-link">perfil</a>
+                <a href="#" class="btn-outline">sair</a>
             {% else %}
                 <button class="btn-outline" id="btn-login">entrar</button>
                 <button class="btn" id="btn-cadastro">cadastrar</button>
@@ -54,7 +54,7 @@
             <button class="modal-close" id="close-login">✕</button>
             <p class="modal-title">Entrar no SEMAG</p>
             <p class="modal-sub">Bem-vindo de volta</p>
-            <form action="{{ url_for('main.login') }}" method="POST">
+            <form action="#" method="POST">
                 <label class="modal-label">Email</label>
                 <input class="modal-input" type="email" name="email" placeholder="seu@email.com" required>
                 <label class="modal-label">Senha</label>
@@ -70,7 +70,7 @@
             <button class="modal-close" id="close-cadastro">✕</button>
             <p class="modal-title">Criar conta</p>
             <p class="modal-sub">Junte-se ao SEMAG</p>
-            <form action="{{ url_for('main.cadastro') }}" method="POST">
+            <form action="#" method="POST">
                 <label class="modal-label">Nome</label>
                 <input class="modal-input" type="text" name="nome" placeholder="seu nome" required>
                 <label class="modal-label">Email</label>
