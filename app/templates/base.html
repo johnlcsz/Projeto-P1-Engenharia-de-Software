@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SEMAG{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block styles %}{% endblock %}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="navbar">
+    <header>
         <a href="{{ url_for('main.index') }}" class="logo">SEMAG</a>
         <nav class="nav-links">
 
             <div class="explorar">
                 <button class="nav-link" id="btn-explorar">explorar</button>
-
                 <div class="search-bar" id="search-bar">
                     <input type="text" class="search-input" id="search-input" placeholder="Buscar jogos...">
                     <button class="search-fechar" id="search-fechar">✕</button>
@@ -45,8 +45,9 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer">
-        <p>SEMAG &copy; 2026. Todos os direitos reservados.</p>
+    <footer>
+        <span class="footer-logo">SEMAG</span>
+        <p class="footer-text">SEMAG &copy; 2026. Todos os direitos reservados.</p>
     </footer>
 
     <div class="modal-overlay" id="modal-login">
