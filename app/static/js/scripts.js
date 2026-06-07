@@ -2,7 +2,7 @@ const btnExplorar = document.getElementById('btn-explorar')
 const searchBar = document.getElementById('search-bar')
 const searchFechar = document.getElementById('search-fechar')
 const searchInput = document.getElementById('search-input')
- 
+
 if (btnExplorar) {
     btnExplorar.addEventListener('click', () => {
         btnExplorar.style.opacity = '0'
@@ -12,7 +12,7 @@ if (btnExplorar) {
         setTimeout(() => searchInput.focus(), 400)
     })
 }
- 
+
 if (searchFechar) {
     searchFechar.addEventListener('click', () => {
         searchBar.classList.remove('ativa')
@@ -25,70 +25,80 @@ if (searchFechar) {
     })
 }
 
-
-const modalLogin = document.getElementById("modal-login");
-const modalCadastro = document.getElementById("modal-cadastro");
-
-const btnLogin = document.getElementById("btn-login");
-const btnCadastro = document.getElementById("btn-cadastro");
-
-const closeLogin = document.getElementById("close-login");
-const closeCadastro = document.getElementById("close-cadastro");
-
-const irCadastro = document.getElementById("ir-cadastro");
-const irLogin = document.getElementById("ir-login");
+const modalLogin = document.getElementById("modal-login")
+const modalCadastro = document.getElementById("modal-cadastro")
+const btnLogin = document.getElementById("btn-login")
+const btnCadastro = document.getElementById("btn-cadastro")
+const closeLogin = document.getElementById("close-login")
+const closeCadastro = document.getElementById("close-cadastro")
+const irCadastro = document.getElementById("ir-cadastro")
+const irLogin = document.getElementById("ir-login")
 
 function abrirModal(modal) {
-    modal.classList.add("active");
+    modal.classList.add("active")
 }
 
 function fecharModal(modal) {
-    modal.classList.remove("active");
+    modal.classList.remove("active")
 }
 
 if (btnLogin) {
     btnLogin.addEventListener("click", () => {
-        abrirModal(modalLogin);
-    });
+        abrirModal(modalLogin)
+    })
 }
 
 if (btnCadastro) {
     btnCadastro.addEventListener("click", () => {
-        abrirModal(modalCadastro);
-    });
+        abrirModal(modalCadastro)
+    })
 }
 
-closeLogin.addEventListener("click", () => {
-    fecharModal(modalLogin);
-});
+if (closeLogin) {
+    closeLogin.addEventListener("click", () => {
+        fecharModal(modalLogin)
+    })
+}
 
-closeCadastro.addEventListener("click", () => {
-    fecharModal(modalCadastro);
-});
+if (closeCadastro) {
+    closeCadastro.addEventListener("click", () => {
+        fecharModal(modalCadastro)
+    })
+}
 
-irCadastro.addEventListener("click", () => {
-    fecharModal(modalLogin);
-    abrirModal(modalCadastro);
-});
+if (irCadastro) {
+    irCadastro.addEventListener("click", () => {
+        fecharModal(modalLogin)
+        abrirModal(modalCadastro)
+    })
+}
 
-irLogin.addEventListener("click", () => {
-    fecharModal(modalCadastro);
-    abrirModal(modalLogin);
-});
+if (irLogin) {
+    irLogin.addEventListener("click", () => {
+        fecharModal(modalCadastro)
+        abrirModal(modalLogin)
+    })
+}
 
 window.addEventListener("click", (e) => {
-    if (e.target === modalLogin) {
-        fecharModal(modalLogin);
-    }
-
-    if (e.target === modalCadastro) {
-        fecharModal(modalCadastro);
-    }
-});
+    if (e.target === modalLogin) fecharModal(modalLogin)
+    if (e.target === modalCadastro) fecharModal(modalCadastro)
+})
 
 document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-        fecharModal(modalLogin);
-        fecharModal(modalCadastro);
+        fecharModal(modalLogin)
+        fecharModal(modalCadastro)
     }
-});
+})
+
+const urlParams = new URLSearchParams(window.location.search)
+const modalParam = urlParams.get('modal')
+
+if (modalParam === 'login' && modalLogin) {
+    abrirModal(modalLogin)
+}
+
+if (modalParam === 'register' && modalCadastro) {
+    abrirModal(modalCadastro)
+}
