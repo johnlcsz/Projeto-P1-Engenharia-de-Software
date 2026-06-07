@@ -33,7 +33,7 @@
         </nav>
     </header>
 
-    {% with mensagens = get_flashed_messages() %}
+    {% with mensagens = get_flashed_messages(category_filter=['geral']) %}
         {% if mensagens %}
             {% for mensagem in mensagens %}
                 <div class="flash">{{ mensagem }}</div>
@@ -55,6 +55,15 @@
             <button class="modal-close" id="close-login">✕</button>
             <p class="modal-title">Entrar no SEMAG</p>
             <p class="modal-sub">Bem-vindo de volta</p>
+
+    {% with mensagens = get_flashed_messages(category_filter=['login']) %}
+        {% if mensagens %}
+            {% for mensagem in mensagens %}
+                <div class="flash-modal">{{ mensagem }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
             <form action="#" method="POST">
                 <label class="modal-label">Email</label>
                 <input class="modal-input" type="email" name="email" placeholder="seu@email.com" required>
@@ -71,6 +80,15 @@
             <button class="modal-close" id="close-cadastro">✕</button>
             <p class="modal-title">Criar conta</p>
             <p class="modal-sub">Junte-se ao SEMAG</p>
+
+    {% with mensagens = get_flashed_messages(category_filter=['cadastro']) %}
+        {% if mensagens %}
+            {% for mensagem in mensagens %}
+                <div class="flash-modal">{{ mensagem }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
             <form action="#" method="POST">
                 <label class="modal-label">Nome</label>
                 <input class="modal-input" type="text" name="nome" placeholder="seu nome" required>
