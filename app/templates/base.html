@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SEMAG{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block styles %}{% endblock %}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="navbar">
+    <header>
         <a href="{{ url_for('main.index') }}" class="logo">SEMAG</a>
         <nav class="nav-links">
 
             <div class="explorar">
                 <button class="nav-link" id="btn-explorar">explorar</button>
-
                 <div class="search-bar" id="search-bar">
                     <input type="text" class="search-input" id="search-input" placeholder="Buscar jogos...">
                     <button class="search-fechar" id="search-fechar">✕</button>
@@ -23,8 +23,8 @@
             </div>
         
             {% if session.get('usuario') %}
-                <a href="{{ url_for('usuario.perfil') }}" class="nav-link">perfil</a>
-                <a href="{{ url_for('usuario.logout') }}" class="btn-outline">sair</a>
+                <a href="#" class="nav-link">perfil</a>
+                <a href="#" class="btn-outline">sair</a>
             {% else %}
                 <button class="btn-outline" id="btn-login">entrar</button>
                 <button class="btn" id="btn-cadastro">cadastrar</button>
@@ -45,8 +45,9 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer">
-        <p>SEMAG &copy; 2026. Todos os direitos reservados.</p>
+    <footer>
+        <span class="footer-logo">SEMAG</span>
+        <p class="footer-text">SEMAG &copy; 2026. Todos os direitos reservados.</p>
     </footer>
 
     <div class="modal-overlay" id="modal-login">
@@ -54,7 +55,7 @@
             <button class="modal-close" id="close-login">✕</button>
             <p class="modal-title">Entrar no SEMAG</p>
             <p class="modal-sub">Bem-vindo de volta</p>
-            <form action="{{ url_for('main.login') }}" method="POST">
+            <form action="#" method="POST">
                 <label class="modal-label">Email</label>
                 <input class="modal-input" type="email" name="email" placeholder="seu@email.com" required>
                 <label class="modal-label">Senha</label>
@@ -70,7 +71,7 @@
             <button class="modal-close" id="close-cadastro">✕</button>
             <p class="modal-title">Criar conta</p>
             <p class="modal-sub">Junte-se ao SEMAG</p>
-            <form action="{{ url_for('main.cadastro') }}" method="POST">
+            <form action="#" method="POST">
                 <label class="modal-label">Nome</label>
                 <input class="modal-input" type="text" name="nome" placeholder="seu nome" required>
                 <label class="modal-label">Email</label>
