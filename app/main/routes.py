@@ -32,7 +32,7 @@ def cadastro():
     else:
         novo_id = criar_usuario(nome, email, senha)
         session['usuario'] = novo_id
-        flash('Conta criada com sucesso!')
+        flash('Conta criada com sucesso!', 'geral')
         return redirect(url_for('usuario.pg_principal'))
     
 @main.route('/login', methods=['POST'])
