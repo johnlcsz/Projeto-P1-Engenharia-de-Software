@@ -1,5 +1,109 @@
 {% extends "base.html" %}
+{% block title %}Início — SEMAG{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pg_principal.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="boas-vindas">
+  <div class="boas-vindas-avatar">{{ session['usuario_nome'][0]|upper }}</div>
+  <div class="boas-vindas-info">
+    <h1 class="boas-vindas-titulo">Olá, {{ session['usuario_nome'] }} 👾</h1>
+    <p class="boas-vindas-sub">Bem-vindo de volta ao SEMAG</p>
+    <div class="boas-vindas-stats">
+      <div class="stat-card">
+        <span class="stat-num">{{ stats.jogados }}</span>
+        <span class="stat-label">Jogados</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">{{ stats.quero_jogar }}</span>
+        <span class="stat-label">Quero jogar</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">{{ stats.reviews }}</span>
+        <span class="stat-label">Reviews</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="acesso-rapido">
+  <h2 class="section-title">Acesso rápido</h2>
+  <div class="acao-grid">
+    <a href="{{ url_for('usuario.biblioteca') }}" class="acao-card">
+      <span class="acao-icone">🎮</span>
+      <span class="acao-titulo">Minha biblioteca</span>
+      <span class="acao-desc">Jogos que você zerou</span>
+    </a>
+    <a href="{{ url_for('usuario.watchlist') }}" class="acao-card">
+      <span class="acao-icone">🔖</span>
+      <span class="acao-titulo">Quero jogar</span>
+      <span class="acao-desc">Sua lista de desejos</span>
+    </a>
+    <a href="{{ url_for('usuario.reviews') }}" class="acao-card">
+      <span class="acao-icone">⭐</span>
+      <span class="acao-titulo">Minhas reviews</span>
+      <span class="acao-desc">Avaliações que você fez</span>
+    </a>
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<section class="populares">
+  <h2 class="section-title">Jogos mais populares</h2>
+  <div class="populares-grid">
+    {% for jogo in populares %}
+    <a href="#" class="pop-card">
+      <div class="pop-cover-wrap">
+        <img src="{{ jogo.cover_url }}"
+             alt="{{ jogo.title }}"
+             class="pop-cover"
+             onerror="this.src=this.dataset.fallback"
+             data-fallback="{{ url_for('static', filename='images/placeholder.png') }}">
+        <span class="pop-badge">#{{ loop.index }}</span>
+        <span class="pop-rating">★ {{ jogo.rating }}</span>
+      </div>
+      <div class="pop-info">
+        <span class="pop-titulo">{{ jogo.title }}</span>
+        <span class="pop-genre">{{ jogo.genre.split('|')[0] }}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<section class="catalogo">
+  <h2 class="section-title">Catálogo de jogos</h2>
+
+  <div class="filtros">
+    <a href="{{ url_for('usuario.pg_principal', genero='') }}"
+       class="filtro {{ 'ativo' if not genero_ativo }}">Todos</a>
+    {% for g in generos %}
+    <a href="{{ url_for('usuario.pg_principal', genero=g) }}"
+       class="filtro {{ 'ativo' if genero_ativo == g }}">{{ g }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="jogos-grid">
+    {% for jogo in valores %}
+    <a href="#" class="jogo-card">
+      <div class="jogo-cover-wrap">
+        <img src="{{ jogo.cover_url }}"
+             alt="{{ jogo.title }}"
+             class="jogo-cover"
+             onerror="this.src=this.dataset.fallback"
+             data-fallback="{{ url_for('static', filename='images/placeholder.png') }}">
+        <span class="jogo-rating">{{ jogo.rating }}</span>
+      </div>
+      <span class="jogo-nome">{{ jogo.title }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
 {% endblock %}
