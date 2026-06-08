@@ -1,4 +1,4 @@
-id,title,cover_url,genre,platform,developer,publisher,release_date,rating,description,,price_brl,tags
+id,title,cover_url,genre,platform,developer,publisher,release_date,rating,description,price_brl,tags
 1,Elden Ring,https://upload.wikimedia.org/wikipedia/pt/0/0d/Elden_Ring_capa.jpg,RPG|Ação|Souls-like,PC|PS5|PS4|Xbox,FromSoftware,Bandai Namco,2022-02-25,9.4,"Mundo aberto sombrio criado por Hidetaka Miyazaki e George R.R. Martin, repleto de desafios épicos.",249.90,mundo-aberto|difícil|fantasia|souls-like
 2,Baldur's Gate III,https://upload.wikimedia.org/wikipedia/en/1/12/Baldur%27s_Gate_3_cover_art.jpg,RPG|Estratégia por turno,PC|PS5|Xbox,Larian Studios,Larian Studios,2023-08-03,9.6,"RPG de turno baseado em D&D 5e com escolhas profundas, co-op e narrativa ramificada.",249.90,cooperativo|fantasia|medieval|narrativa
 3,Outer Wilds,https://upload.wikimedia.org/wikipedia/commons/d/da/Outer_Wilds_poster_%28no_credits%29.jpg,Aventura|Exploração,PC|PS4|PS5|Xbox,Mobius Digital,Annapurna Interactive,2019-05-28,9.1,"Exploração de um sistema solar preso em loop de 22 minutos cheia de mistério e descoberta.",69.99,indie|espaço|mistério|loop-temporal
