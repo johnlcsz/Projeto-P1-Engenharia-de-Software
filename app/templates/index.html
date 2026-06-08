@@ -3,3 +3,38 @@
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
+
+{% block title %}SEMAG{% endblock %}
+
+{% block content %}
+
+  <section class="hero" style='background-image: url("{{ url_for("static", filename="images/hero.jpg") }}");'>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Registre os jogos que você zerou.<br>
+        Salve os que quer jogar.<br>
+        Compartilhe o que vale a pena.
+      </h1>
+      <a href="#" class="hero-btn" id="btn-comecar">Começar</a>
+    </div>
+  </section>
+
+  <section class="destaques">
+    <p class="dest-label">recomendados por nós</p>
+    <div class="dest-grid">
+      {% for jogo in valores[:4] %}
+      <div class="dest-card">
+        <img src="{{ jogo.cover_url }}" alt="{{ jogo.title }}" class="dest-cover">
+        <p class="dest-nome">{{ jogo.title }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="frase">
+    <p class="frase-principal">Avalie, registre reviews. Monte sua biblioteca. Viva sua história nos games.</p>
+    <p class="frase-sub"><strong><a href="#" id="btn-cadastrar-frase">Cadastre-se</a></strong> e comece a registrar sua jornada.</p>
+  </section>
+
+{% endblock %}
