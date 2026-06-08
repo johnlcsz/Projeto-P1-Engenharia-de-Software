@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
+from app.services.user_service import *
 from app.services.csv_service import gerar_id, ler_csv
-from app.services.user_service import validar_senha, validar_nome, email_existe, criar_usuario, nome_existe, ARQUIVOS_JOGOS
 
 main = Blueprint('main', __name__)
 
@@ -8,6 +8,8 @@ main = Blueprint('main', __name__)
 def index():
     if session.get('usuario'):
         return redirect(url_for('usuario.pg_principal'))
+    
+    #Se o cadastro ou login der erro, o modal reaparece para ele tentar de novo 
     modal = request.args.get('modal')
     valores = ler_csv(ARQUIVOS_JOGOS)
     return render_template('index.html', modal=modal, valores=valores)
@@ -17,6 +19,7 @@ def cadastro():
     nome = request.form.get('nome')
     email = request.form.get('email')
     senha = request.form.get('senha')
+
     erros = []
     if not validar_nome(nome):
         erros.append('O nome precisa ter entre 3 e 20 caracteres.')
@@ -26,16 +29,35 @@ def cadastro():
         erros.append('Esse e-mail já está sendo usado.')
     if not validar_senha(senha):
         erros.append('A senha precisa ter entre 6 e 20 caracteres e conter pelo menos uma letra e um número.')
+
     if erros:
         for erro in erros:
             flash(erro, 'cadastro')
+            
         return redirect(url_for('main.index', modal='register'))
-    else:
-        novo_id = criar_usuario(nome, email, senha)
-        session['usuario'] = novo_id
-        flash('Conta criada com sucesso!', 'geral')
-        return redirect(url_for('usuario.pg_principal'))
+    
+    novo_id = criar_usuario(nome, email, senha)
+    session['usuario_id'] = novo_id
+    session['usuario_nome'] = nome
+
+    flash('Conta criada com sucesso!')
+
+    return redirect(url_for('usuario.pg_principal'))
     
 @main.route('/login', methods=['POST'])
 def login():
-    return redirect(url_for('main.index'))
+
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+    usuario = busca_usuario_email(email)
+
+    if usuario and senha_correta(usuario, senha):
+        session['usuario_id'] = usuario['id']
+        session['usuario_nome'] = usuario['id']
+        flash('Você fez login com sucesso!', 'geral')
+
+        return redirect(url_for('usuario.pg_principal'))
+    
+    flash('Email ou senha inválidos.', 'login')
+
+    return redirect(url_for('main.index', modal='login'))
