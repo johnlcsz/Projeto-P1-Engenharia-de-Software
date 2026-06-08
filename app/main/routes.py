@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
-from app.services.csv_service import gerar_id
-from app.services.user_service import validar_senha, validar_nome, email_existe, criar_usuario, nome_existe
+from app.services.csv_service import gerar_id, ler_csv
+from app.services.user_service import validar_senha, validar_nome, email_existe, criar_usuario, nome_existe, ARQUIVOS_JOGOS
 
 main = Blueprint('main', __name__)
 
@@ -9,7 +9,8 @@ def index():
     if session.get('usuario'):
         return redirect(url_for('usuario.pg_principal'))
     modal = request.args.get('modal')
-    return render_template('index.html', modal=modal)
+    valores = ler_csv(ARQUIVOS_JOGOS)
+    return render_template('index.html', modal=modal, valores=valores)
 
 @main.route('/cadastro', methods=['POST'])
 def cadastro():
