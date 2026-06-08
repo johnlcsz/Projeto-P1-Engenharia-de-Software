@@ -53,7 +53,7 @@ def login():
 
     if usuario and senha_correta(usuario, senha):
         session['usuario_id'] = usuario['id']
-        session['usuario_nome'] = usuario['id']
+        session['usuario_nome'] = usuario['nome']
         flash('Você fez login com sucesso!', 'geral')
 
         return redirect(url_for('usuario.pg_principal'))

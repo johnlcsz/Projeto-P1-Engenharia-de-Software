@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Minhas Reviews — SEMAG{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pg_principal.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="boas-vindas">
+  <div class="boas-vindas-avatar">{{ session['usuario_nome'][0]|upper }}</div>
+  <div class="boas-vindas-info">
+    <h1 class="boas-vindas-titulo">Minhas Reviews</h1>
+    <p class="boas-vindas-sub">Avaliações que você escreveu</p>
+  </div>
+</section>
+
+<section class="catalogo">
+  <h2 class="section-title">Reviews escritas</h2>
+  <div class="reviews-lista">
+    <p style="color: #8884a0; font-size: 13px;">Nenhuma review escrita ainda.</p>
+  </div>
+</section>
+
+{% endblock %}
