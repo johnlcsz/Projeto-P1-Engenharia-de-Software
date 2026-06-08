@@ -24,7 +24,7 @@
         
             {% if session.get('usuario_id') %}
                 <a href="#" class="nav-link">Perfil</a>
-                <a href="#" class="btn-outline">Sair</a>
+                <a href="/logout" class="btn-outline">Sair</a>
             {% else %}
                 <button class="btn-outline" id="btn-login">Entrar</button>
                 <button class="btn" id="btn-cadastro">Cadastrar</button>

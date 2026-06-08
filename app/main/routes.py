@@ -40,7 +40,7 @@ def cadastro():
     session['usuario_id'] = novo_id
     session['usuario_nome'] = nome
 
-    flash('Conta criada com sucesso!')
+    flash('Conta criada com sucesso!', 'geral')
 
     return redirect(url_for('usuario.pg_principal'))
     
@@ -61,3 +61,9 @@ def login():
     flash('Email ou senha inválidos.', 'login')
 
     return redirect(url_for('main.index', modal='login'))
+
+@main.route('/logout')
+def logout():
+    session.clear()
+    flash('Você se desconectou da conta.', 'geral')
+    return redirect(url_for('main.index'))
