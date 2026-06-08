@@ -102,3 +102,13 @@ if (modalParam === 'login' && modalLogin) {
 if (modalParam === 'register' && modalCadastro) {
     abrirModal(modalCadastro)
 }
+
+const btnComecar = document.getElementById('btn-comecar')
+if (btnComecar) {
+    btnComecar.addEventListener('click', () => abrirModal(modalCadastro))
+}
+
+const btnCadastrarFrase = document.getElementById('btn-cadastrar-frase')
+if (btnCadastrarFrase) {
+    btnCadastrarFrase.addEventListener('click', () => abrirModal(modalCadastro))
+}

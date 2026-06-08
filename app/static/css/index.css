@@ -1,0 +1,148 @@
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 15, 19, 0.5) 0%,
+        rgba(15, 15, 19, 0.7) 60%,
+        rgba(15, 15, 19, 1) 100%
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    padding: 0 24px;
+}
+
+.hero-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.4;
+    margin-bottom: 32px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.hero-btn {
+    display: inline-block;
+    background: #7c3aed;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 8px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.hero-btn:hover {
+    background: #6d28d9;
+    transform: translateY(-2px);
+}
+
+.destaques {
+    background: #0f0f13;
+    padding: 32px 28px;
+}
+
+.dest-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8884a0;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dest-label::before,
+.dest-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: #2a2a3a;
+}
+
+.dest-grid {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.dest-card {
+    flex: 1;
+    max-width: 150px;
+    cursor: pointer;
+}
+
+.dest-card:hover .dest-cover {
+    transform: translateY(-4px);
+}
+
+.dest-cover {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: transform 0.2s;
+    object-fit: cover;
+    object-position: center;
+}
+
+.dest-nome {
+    font-size: 11px;
+    color: #8884a0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.frase {
+    background: #16161d;
+    border-top: 0.5px solid #2a2a3a;
+    border-bottom: 0.5px solid #2a2a3a;
+    padding: 36px 28px;
+    text-align: center;
+}
+
+.frase-principal {
+    font-size: 22px;
+    font-weight: 400;
+    color: #c4b5fd;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.frase-sub {
+    font-size: 14px;
+    color: #8884a0;
+}
+
+.frase-sub a {
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+.frase-sub a:hover {
+    text-decoration: underline;
+}
