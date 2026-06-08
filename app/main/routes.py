@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
-from app.services.csv_service import gerar_id
 from app.services.user_service import *
+from app.services.csv_service import gerar_id, ler_csv
 
 main = Blueprint('main', __name__)
 
@@ -11,8 +11,8 @@ def index():
     
     #Se o cadastro ou login der erro, o modal reaparece para ele tentar de novo 
     modal = request.args.get('modal')
-
-    return render_template('index.html', modal=modal)
+    valores = ler_csv(ARQUIVOS_JOGOS)
+    return render_template('index.html', modal=modal, valores=valores)
 
 @main.route('/cadastro', methods=['POST'])
 def cadastro():
