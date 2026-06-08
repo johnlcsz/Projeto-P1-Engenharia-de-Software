@@ -1,5 +1,5 @@
 from app.services.csv_service import *
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #Constantes do caminho dos arquivos CSV
 ARQUIVO_USUARIOS = 'data/usuarios.csv'
@@ -11,11 +11,13 @@ COLUNAS_USUARIOS = ['id', 'nome', 'email', 'senha_hash']
 COLUNAS_JOGOS = ['id', 'nome', 'descrição', 'genero', 'capa', 'ano']
 COLUNAS_REVIEWS = ['id', 'id_usuario', 'autor' , 'id_jogo', 'nota', 'comentario']
 
-#def busca_usuario_email(email):
+def busca_usuario_email(email:str) -> dict:
+    usuarios = ler_csv(ARQUIVO_USUARIOS)
+    for usuario in usuarios:
+        if usuario['email'] == email:
+            return usuario
     
 #def busca_usuario_id(id):
-
-#def busca_usuario_nome(str):
 
 #Validação
 def email_existe(email):
@@ -57,6 +59,13 @@ def validar_senha(senha):
         if tem_letra and tem_numero:
             return True
     return False
+
+def senha_correta(usuario:dict, senha:str) -> bool:
+    '''
+    Verifica se a senha informada pelo usuário corresponde ao hash salvo.
+    '''
+    return check_password_hash(usuario['senha_hash'], senha)
+
     
 #Ação
 def criar_usuario(nome: str, email: str, senha: str) -> str:

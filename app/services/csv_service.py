@@ -1,6 +1,6 @@
 import csv
 
-def ler_csv(arquivo: str) -> list:
+def ler_csv(arquivo: str) -> list[dict]:
     '''
     Lê os dados do arquivo e retorna os valores de cada linha.
     '''
