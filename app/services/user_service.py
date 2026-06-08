@@ -8,7 +8,6 @@ ARQUIVO_REVIEWS = 'data/reviews.csv'
 
 #Constantes dos cabeçalhos dos arquivos CSV
 COLUNAS_USUARIOS = ['id', 'nome', 'email', 'senha_hash']
-COLUNAS_JOGOS = ['id', 'nome', 'descrição', 'genero', 'capa', 'ano']
 COLUNAS_REVIEWS = ['id', 'id_usuario', 'autor' , 'id_jogo', 'nota', 'comentario']
 
 def busca_usuario_email(email:str) -> dict:
