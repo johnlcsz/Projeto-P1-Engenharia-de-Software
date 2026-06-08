@@ -15,7 +15,7 @@
         <nav class="nav-links">
 
             <div class="explorar">
-                <button class="nav-link" id="btn-explorar">explorar</button>
+                <button class="nav-link" id="btn-explorar">Explorar</button>
                 <div class="search-bar" id="search-bar">
                     <input type="text" class="search-input" id="search-input" placeholder="Buscar jogos...">
                     <button class="search-fechar" id="search-fechar">✕</button>
@@ -23,11 +23,11 @@
             </div>
         
             {% if session.get('usuario_id') %}
-                <a href="#" class="nav-link">perfil</a>
-                <a href="#" class="btn-outline">sair</a>
+                <a href="#" class="nav-link">Perfil</a>
+                <a href="#" class="btn-outline">Sair</a>
             {% else %}
-                <button class="btn-outline" id="btn-login">entrar</button>
-                <button class="btn" id="btn-cadastro">cadastrar</button>
+                <button class="btn-outline" id="btn-login">Entrar</button>
+                <button class="btn" id="btn-cadastro">Cadastrar</button>
             {% endif %}
 
         </nav>
@@ -64,7 +64,7 @@
         {% endif %}
     {% endwith %}
 
-            <form action="#" method="POST">
+            <form action="/login" method="POST">
                 <label class="modal-label">Email</label>
                 <input class="modal-input" type="email" name="email" placeholder="seu@email.com" required>
                 <label class="modal-label">Senha</label>
@@ -89,7 +89,7 @@
         {% endif %}
     {% endwith %}
     
-            <form action="#" method="POST">
+            <form action="/cadastro" method="POST">
                 <label class="modal-label">Nome</label>
                 <input class="modal-input" type="text" name="nome" placeholder="seu nome" required>
                 <label class="modal-label">Email</label>
