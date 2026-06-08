@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for, request
 from app.services.csv_service import ler_csv
 from app.services.user_service import ARQUIVOS_JOGOS, ARQUIVO_REVIEWS
 
@@ -31,14 +31,25 @@ def _get_populares(jogos, limite=5):
 def pg_principal():
     if not session.get('usuario_id'):
         return redirect(url_for('main.index'))
+
     jogos = ler_csv(ARQUIVOS_JOGOS)
     generos = _get_generos(jogos)
     populares = _get_populares(jogos)
-    genero_ativo = None
     stats = _get_stats(session['usuario_id'])
+
+    genero_ativo = request.args.get('genero', '').strip()
+    # Filtra os jogos se um gênero foi selecionado
+    if genero_ativo:
+        jogos_filtrados = [
+            j for j in jogos
+            if genero_ativo in [g.strip() for g in j['genre'].split('|')]
+        ]
+    else:
+        jogos_filtrados = jogos
+
     return render_template(
         'pg_principal.html',
-        valores=jogos,
+        valores=jogos_filtrados,
         generos=generos,
         populares=populares,
         genero_ativo=genero_ativo,
