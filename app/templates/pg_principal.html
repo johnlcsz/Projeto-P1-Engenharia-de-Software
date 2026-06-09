@@ -56,7 +56,7 @@
   <h2 class="section-title">Jogos mais populares</h2>
   <div class="populares-grid">
     {% for jogo in populares %}
-    <a href="#" class="pop-card">
+    <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id) }}" class="pop-card">
       <div class="pop-cover-wrap">
         <img src="{{ jogo.cover_url }}"
              alt="{{ jogo.title }}"
@@ -91,7 +91,7 @@
 
   <div class="jogos-grid">
     {% for jogo in valores %}
-    <a href="#" class="jogo-card">
+    <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id) }}" class="jogo-card">
       <div class="jogo-cover-wrap">
         <img src="{{ jogo.cover_url }}"
              alt="{{ jogo.title }}"
