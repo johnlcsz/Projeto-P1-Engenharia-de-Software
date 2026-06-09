@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request
-from app.services.csv_service import ler_csv
-from app.services.user_service import ARQUIVOS_JOGOS, ARQUIVO_REVIEWS
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash
+from app.services.csv_service import ler_csv, adicionar_linha, gerar_id
+from app.services.user_service import ARQUIVOS_JOGOS, ARQUIVO_REVIEWS, COLUNAS_REVIEWS
 
 usuario = Blueprint('usuario', __name__)
 
@@ -73,3 +73,38 @@ def reviews():
     if not session.get('usuario_id'):
         return redirect(url_for('main.index'))
     return render_template('reviews.html')
+
+@usuario.route('/jogo/<int:jogo_id>')
+def detalhes(jogo_id):
+    
+    jogos = ler_csv(ARQUIVOS_JOGOS)
+    jogo = next((j for j in jogos if int(j['id']) == jogo_id), None)
+    if not jogo:
+        return redirect(url_for('usuario.pg_principal'))
+    try:
+        reviews = ler_csv(ARQUIVO_REVIEWS)
+        reviews_jogo = [r for r in reviews if r['id_jogo'] == str(jogo_id)]
+    except FileNotFoundError:
+        reviews_jogo = []
+    return render_template('detalhes.html', jogo=jogo, reviews=reviews_jogo)
+
+@usuario.route('/avaliar/<int:jogo_id>', methods=['POST'])
+def avaliar(jogo_id):
+    if not session.get('usuario_id'):
+        return redirect(url_for('main.index', modal='register'))
+    nota = request.form.get('nota', '0')
+    comentario = request.form.get('comentario', '').strip()
+    if not nota or int(nota) == 0:
+        flash('Selecione uma nota antes de salvar!', 'geral')
+        return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+    nova_review = {
+        'id': gerar_id(ARQUIVO_REVIEWS),
+        'id_usuario': session['usuario_id'],
+        'autor': session['usuario_nome'],
+        'id_jogo': str(jogo_id),
+        'nota': nota,
+        'comentario': comentario
+    }
+    adicionar_linha(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, nova_review)
+    flash('Avaliação publicada com sucesso!', 'geral')
+    return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))

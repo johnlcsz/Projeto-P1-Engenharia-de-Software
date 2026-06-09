@@ -21,16 +21,18 @@
   </section>
 
   <section class="destaques">
-    <p class="dest-label">recomendados por nós</p>
-    <div class="dest-grid">
-      {% for jogo in valores[:4] %}
-      <div class="dest-card">
-        <img src="{{ jogo.cover_url }}" alt="{{ jogo.title }}" class="dest-cover">
-        <p class="dest-nome">{{ jogo.title }}</p>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
+  <p class="dest-label">recomendados por nós</p>
+  <div class="dest-grid">
+    {% for jogo in valores[:4] %}
+    <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id) }}" class="dest-card">
+      <img src="{{ jogo.cover_url }}" alt="{{ jogo.title }}" class="dest-cover"
+           onerror="this.src=this.dataset.fallback"
+           data-fallback="{{ url_for('static', filename='images/placeholder.png') }}">
+      <p class="dest-nome">{{ jogo.title }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
 
   <section class="frase">
     <p class="frase-principal">Avalie, registre reviews. Monte sua biblioteca. Viva sua história nos games.</p>

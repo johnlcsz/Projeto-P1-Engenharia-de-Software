@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detalhes.css') }}">
+{% endblock %}
+
+{% block title %}{{ jogo.title }} — SEMAG{% endblock %}
+
+{% block content %}
+
+  <section class="det-hero">
+    <img src="{{ jogo.cover_url }}" alt="{{ jogo.title }}" class="det-cover">
+    <div class="det-info">
+      <h1 class="det-title">{{ jogo.title }}</h1>
+      <div class="det-meta">
+        {% for genero in jogo.genre.split('|') %}
+          <span class="det-badge">{{ genero }}</span>
+        {% endfor %}
+        <span class="det-badge">{{ jogo.developer }}</span>
+        <span class="det-badge">{{ jogo.release_date[:4] }}</span>
+      </div>
+      <p class="det-rating">★ {{ jogo.rating }} <span class="det-rating-label">/ 10</span></p>
+      <p class="det-desc">{{ jogo.description }}</p>
+      {% if session.get('usuario_id') %}
+        <button class="det-btn" id="btn-avaliar">+ Avaliar este jogo</button>
+      {% else %}
+        <button class="det-btn" id="btn-login">Entre para avaliar</button>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="reviews-section">
+
+    {% if session.get('usuario_id') %}
+    <div class="avaliacao-box" id="form-avaliacao">
+      <p class="av-title">Sua avaliação</p>
+      <form action="{{ url_for('usuario.avaliar', jogo_id=jogo.id) }}" method="POST">
+        <div class="stars-input" id="stars-input">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+        <input type="hidden" name="nota" id="nota-input" value="0">
+        <textarea class="av-textarea" name="comentario" placeholder="Escreva sua review..."></textarea>
+        <button class="av-btn" type="submit">Salvar avaliação</button>
+      </form>
+    </div>
+    {% endif %}
+
+    <div class="section-divider">avaliações</div>
+
+    {% if reviews %}
+      {% for review in reviews %}
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-user">
+            <div class="review-avatar">{{ review.autor[:2].upper() }}</div>
+            <span class="review-name">{{ review.autor }}</span>
+          </div>
+          <span class="review-stars">
+            {% for i in range(review.nota | int) %}★{% endfor %}
+          </span>
+        </div>
+        <p class="review-text">{{ review.comentario }}</p>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="sem-reviews">Nenhuma avaliação ainda. Seja o primeiro a avaliar!</p>
+    {% endif %}
+
+  </section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/detalhes.js') }}"></script>
+{% endblock %}
