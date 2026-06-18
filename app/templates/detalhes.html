@@ -19,7 +19,7 @@
         <span class="det-badge">{{ jogo.developer }}</span>
         <span class="det-badge">{{ jogo.release_date[:4] }}</span>
       </div>
-      <p class="det-rating">★ {{ jogo.rating }} <span class="det-rating-label">/ 10</span></p>
+      <p class="det-rating">★ {{ jogo.nota_usuarios if jogo.nota_usuarios is not none else '-' }} <span class="det-rating-label">/ 5</span></p>
       <p class="det-desc">{{ jogo.description }}</p>
       {% if session.get('usuario_id') %}
         <button class="det-btn" id="btn-avaliar">+ Avaliar este jogo</button>

@@ -64,7 +64,7 @@
              onerror="this.src=this.dataset.fallback"
              data-fallback="{{ url_for('static', filename='images/placeholder.png') }}">
         <span class="pop-badge">#{{ loop.index }}</span>
-        <span class="pop-rating">★ {{ jogo.rating }}</span>
+        <span class="pop-rating">★ {{ jogo.nota_usuarios if jogo.nota_usuarios is not none else '-' }}</span>
       </div>
       <div class="pop-info">
         <span class="pop-titulo">{{ jogo.title }}</span>
@@ -98,7 +98,7 @@
              class="jogo-cover"
              onerror="this.src=this.dataset.fallback"
              data-fallback="{{ url_for('static', filename='images/placeholder.png') }}">
-        <span class="jogo-rating">{{ jogo.rating }}</span>
+        <span class="jogo-rating">{{ jogo.nota_usuarios if jogo.nota_usuarios is not none else '-' }}</span>
       </div>
       <span class="jogo-nome">{{ jogo.title }}</span>
     </a>

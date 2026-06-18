@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash
 from app.services.csv_service import ler_csv, adicionar_linha, gerar_id
 from app.services.user_service import ARQUIVOS_JOGOS, ARQUIVO_REVIEWS, COLUNAS_REVIEWS
+from app.services.reviews_service import calcular_nota, usuario_ja_avaliou
 
 usuario = Blueprint('usuario', __name__)
 
-def _get_stats(usuario_id):
+def _get_stats(usuario_id: str) -> dict:
     try:
         reviews = ler_csv(ARQUIVO_REVIEWS)
         reviews_usuario = [r for r in reviews if r['id_usuario'] == str(usuario_id)]
@@ -16,15 +17,15 @@ def _get_stats(usuario_id):
         'reviews': len(reviews_usuario)
     }
 
-def _get_generos(jogos):
+def _get_generos(jogos: list[dict]) -> set:
     generos = set()
     for jogo in jogos:
         for g in jogo['genre'].split('|'):
             generos.add(g.strip())
     return sorted(generos)
 
-def _get_populares(jogos, limite=5):
-    ordenados = sorted(jogos, key=lambda j: float(j['rating']), reverse=True)
+def _get_populares(jogos: list[dict], limite=5) -> list[dict]:
+    ordenados = sorted(jogos, key=lambda j: float(j['nota_usuarios']) if j['nota_usuarios'] is not None else 0, reverse=True)
     return ordenados[:limite]
 
 @usuario.route('/principal')
@@ -34,8 +35,11 @@ def pg_principal():
 
     jogos = ler_csv(ARQUIVOS_JOGOS)
     generos = _get_generos(jogos)
-    populares = _get_populares(jogos)
     stats = _get_stats(session['usuario_id'])
+
+    for jogo in jogos:
+        jogo['nota_usuarios'] = calcular_nota(jogo['id'])
+    populares = _get_populares(jogos)
 
     genero_ativo = request.args.get('genero', '').strip()
     # Filtra os jogos se um gênero foi selecionado
@@ -86,17 +90,28 @@ def detalhes(jogo_id):
         reviews_jogo = [r for r in reviews if r['id_jogo'] == str(jogo_id)]
     except FileNotFoundError:
         reviews_jogo = []
+
+    jogo['nota_usuarios'] = calcular_nota(jogo['id'])
+
     return render_template('detalhes.html', jogo=jogo, reviews=reviews_jogo)
 
 @usuario.route('/avaliar/<int:jogo_id>', methods=['POST'])
 def avaliar(jogo_id):
+
     if not session.get('usuario_id'):
         return redirect(url_for('main.index', modal='register'))
+    
+    if usuario_ja_avaliou(session['usuario_id'], jogo_id):
+        flash('Você já avaliou esse jogo.', 'geral')
+        return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+
     nota = request.form.get('nota', '0')
     comentario = request.form.get('comentario', '').strip()
+
     if not nota or int(nota) == 0:
         flash('Selecione uma nota antes de salvar!', 'geral')
         return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+    
     nova_review = {
         'id': gerar_id(ARQUIVO_REVIEWS),
         'id_usuario': session['usuario_id'],
@@ -105,6 +120,7 @@ def avaliar(jogo_id):
         'nota': nota,
         'comentario': comentario
     }
+
     adicionar_linha(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, nova_review)
     flash('Avaliação publicada com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
