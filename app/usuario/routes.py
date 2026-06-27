@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash
-from app.services.csv_service import ler_csv, adicionar_linha, gerar_id
+from app.services.csv_service import ler_csv, adicionar_linha, gerar_id, escrever_csv
 from app.services.user_service import ARQUIVOS_JOGOS, ARQUIVO_REVIEWS, COLUNAS_REVIEWS
-from app.services.reviews_service import calcular_nota, usuario_ja_avaliou
+from app.services.reviews_service import calcular_nota, usuario_ja_avaliou, usuario_pode_editar, busca_review
 
 usuario = Blueprint('usuario', __name__)
 
@@ -81,6 +81,9 @@ def reviews():
 @usuario.route('/jogo/<int:jogo_id>')
 def detalhes(jogo_id):
     
+    # Se existir, indica qual avaliação deve ser exibida em modo de edição
+    review_id = request.args.get('editar')
+
     jogos = ler_csv(ARQUIVOS_JOGOS)
     jogo = next((j for j in jogos if int(j['id']) == jogo_id), None)
     if not jogo:
@@ -93,7 +96,21 @@ def detalhes(jogo_id):
 
     jogo['nota_usuarios'] = calcular_nota(jogo['id'])
 
-    return render_template('detalhes.html', jogo=jogo, reviews=reviews_jogo)
+    ja_avaliou = usuario_ja_avaliou(session.get('usuario_id'), jogo_id)
+    print(ja_avaliou)
+    review_editando = None
+
+    if review_id:
+        review_editando = next((r for r in reviews_jogo if review_id == r['id']), None)
+        if review_editando:
+            if not usuario_pode_editar(session.get('usuario_id'), review_editando):
+                flash('Você não tem permissão para editar essa avaliação.', 'geral')
+                return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+        else:
+            flash('Essa avaliação não existe.', 'geral')
+            return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+        
+    return render_template('detalhes.html', jogo=jogo, reviews=reviews_jogo, review_id=review_id, ja_avaliou=ja_avaliou, review_editando=review_editando)
 
 @usuario.route('/avaliar/<int:jogo_id>', methods=['POST'])
 def avaliar(jogo_id):
@@ -123,4 +140,37 @@ def avaliar(jogo_id):
 
     adicionar_linha(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, nova_review)
     flash('Avaliação publicada com sucesso!', 'geral')
+    return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+
+@usuario.route('/editar/<review_id>', methods=['POST'])
+def editar(review_id):
+    if not session.get('usuario_id'):
+        return redirect(url_for('main.index', modal='register'))
+    
+    review_editada = busca_review(review_id)
+    if not review_editada:
+        flash('Essa avaliação não existe.', 'geral')
+        return redirect(url_for('usuario.pg_principal'))
+    jogo_id = review_editada['id_jogo']
+
+    if not usuario_pode_editar(session.get('usuario_id'), review_editada):
+        flash('Você não tem permissão para editar essa avaliação.', 'geral')
+        return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+    
+    nota = request.form.get('nota', '0')
+    comentario = request.form.get('comentario', '').strip()
+
+    if not nota or int(nota) == 0:
+        flash('Selecione uma nota antes de salvar!', 'geral')
+        return redirect(url_for('usuario.detalhes', jogo_id=jogo_id, review_id=review_id))
+
+    reviews = ler_csv(ARQUIVO_REVIEWS)
+    for r in reviews:
+        if r['id'] == review_id:
+            r['nota'] = nota
+            r['comentario'] = comentario
+            break
+    escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, reviews)
+
+    flash('Avaliação editada com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
