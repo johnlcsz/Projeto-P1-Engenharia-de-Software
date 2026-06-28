@@ -147,30 +147,32 @@ def editar(review_id):
     if not session.get('usuario_id'):
         return redirect(url_for('main.index', modal='register'))
     
-    review_editada = busca_review(review_id)
-    if not review_editada:
-        flash('Essa avaliação não existe.', 'geral')
-        return redirect(url_for('usuario.pg_principal'))
-    jogo_id = review_editada['id_jogo']
-
-    if not usuario_pode_editar(session.get('usuario_id'), review_editada):
-        flash('Você não tem permissão para editar essa avaliação.', 'geral')
-        return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
-    
     nota = request.form.get('nota', '0')
     comentario = request.form.get('comentario', '').strip()
 
-    if not nota or int(nota) == 0:
-        flash('Selecione uma nota antes de salvar!', 'geral')
-        return redirect(url_for('usuario.detalhes', jogo_id=jogo_id, review_id=review_id))
-
+    review_encontrada = False
     reviews = ler_csv(ARQUIVO_REVIEWS)
     for r in reviews:
         if r['id'] == review_id:
+            review_encontrada = True
+            jogo_id = r['id_jogo']
+
+            if not usuario_pode_editar(session.get('usuario_id'), r):
+                flash('Você não tem permissão para editar essa avaliação.', 'geral')
+
+                return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+            if not nota or int(nota) == 0:
+                flash('Selecione uma nota antes de salvar!', 'geral')
+                return redirect(url_for('usuario.detalhes', jogo_id=jogo_id, review_id=review_id))
+            
             r['nota'] = nota
             r['comentario'] = comentario
             break
-    escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, reviews)
+    
+    if not review_encontrada:
+        flash('Essa avaliação não existe.', 'geral')
+        return redirect(url_for('usuario.pg_principal'))
 
+    escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, reviews)
     flash('Avaliação editada com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
