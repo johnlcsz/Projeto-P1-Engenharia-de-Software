@@ -231,3 +231,18 @@
     text-align: center;
     padding: 24px 0;
 }
+
+.review-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: end;
+}
+
+.review-actions a {
+    color: #8884a0;
+    font-size: 80%;
+}
+
+.review-actions a:hover {
+    color: #6d28d9;
+}

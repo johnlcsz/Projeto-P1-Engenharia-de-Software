@@ -2,7 +2,11 @@ const stars = document.querySelectorAll('.star')
 const notaInput = document.getElementById('nota-input')
 
 if (stars.length > 0) {
-    let notaSelecionada = 0
+    let notaSelecionada = parseInt(notaInput.value) || 0
+
+    stars.forEach(s => {
+    s.classList.toggle('on', parseInt(s.dataset.value) <= notaSelecionada)
+})
 
     stars.forEach(star => {
         star.addEventListener('mouseover', () => {

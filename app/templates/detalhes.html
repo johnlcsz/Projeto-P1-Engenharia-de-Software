@@ -19,7 +19,7 @@
         <span class="det-badge">{{ jogo.developer }}</span>
         <span class="det-badge">{{ jogo.release_date[:4] }}</span>
       </div>
-      <p class="det-rating">★ {{ jogo.rating }} <span class="det-rating-label">/ 10</span></p>
+      <p class="det-rating">★ {{ jogo.nota_usuarios if jogo.nota_usuarios is not none else '-' }} <span class="det-rating-label">/ 5</span></p>
       <p class="det-desc">{{ jogo.description }}</p>
       {% if session.get('usuario_id') %}
         <button class="det-btn" id="btn-avaliar">+ Avaliar este jogo</button>
@@ -31,7 +31,7 @@
 
   <section class="reviews-section">
 
-    {% if session.get('usuario_id') %}
+    {% if session.get('usuario_id') and not ja_avaliou %}
     <div class="avaliacao-box" id="form-avaliacao">
       <p class="av-title">Sua avaliação</p>
       <form action="{{ url_for('usuario.avaliar', jogo_id=jogo.id) }}" method="POST">
@@ -47,24 +47,43 @@
         <button class="av-btn" type="submit">Salvar avaliação</button>
       </form>
     </div>
+    {% elif review_id == review_editando.id %}
+      <form action="{{ url_for('usuario.editar', review_id=review_editando.id) }}" method="POST">
+        <div class="stars-input" id="stars-input">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+        <input type="hidden" name="nota" id="nota-input" value="{{ review_editando.nota }}">
+        <textarea class="av-textarea" name="comentario">{{ review_editando.comentario }}</textarea>
+        <button class="av-btn" type="submit">Salvar avaliação</button>
+      </form>
     {% endif %}
 
     <div class="section-divider">avaliações</div>
 
     {% if reviews %}
       {% for review in reviews %}
-      <div class="review-card">
-        <div class="review-header">
-          <div class="review-user">
-            <div class="review-avatar">{{ review.autor[:2].upper() }}</div>
-            <span class="review-name">{{ review.autor }}</span>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-user">
+                <div class="review-avatar">{{ review.autor[:2].upper() }}</div>
+                <span class="review-name">{{ review.autor }}</span>
+            </div>
+              <span class="review-stars">
+              {% for i in range(review.nota | int) %}★{% endfor %}
+              </span>
           </div>
-          <span class="review-stars">
-            {% for i in range(review.nota | int) %}★{% endfor %}
-          </span>
+          <p class="review-text">{{ review.comentario }}</p>
+          <div class="review-actions">
+            {% if session.get('usuario_id') == review.id_usuario %} 
+              <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id, editar=review.id)}}">Editar</a>
+              <a href="#">Excluir</a>
+            {% endif %}
+          </div>
         </div>
-        <p class="review-text">{{ review.comentario }}</p>
-      </div>
       {% endfor %}
     {% else %}
       <p class="sem-reviews">Nenhuma avaliação ainda. Seja o primeiro a avaliar!</p>

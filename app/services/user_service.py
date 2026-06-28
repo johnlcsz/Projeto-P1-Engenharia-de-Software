@@ -15,8 +15,6 @@ def busca_usuario_email(email:str) -> dict:
     for usuario in usuarios:
         if usuario['email'] == email:
             return usuario
-    
-#def busca_usuario_id(id):
 
 #Validação
 def email_existe(email):

@@ -23,7 +23,7 @@
   <section class="destaques">
   <p class="dest-label">recomendados por nós</p>
   <div class="dest-grid">
-    {% for jogo in valores[:4] %}
+    {% for jogo in valores %}
     <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id) }}" class="dest-card">
       <img src="{{ jogo.cover_url }}" alt="{{ jogo.title }}" class="dest-cover"
            onerror="this.src=this.dataset.fallback"
