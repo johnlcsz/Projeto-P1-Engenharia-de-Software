@@ -238,11 +238,21 @@
     justify-content: end;
 }
 
-.review-actions a {
-    color: #8884a0;
-    font-size: 80%;
+.review-actions form {
+    display: flex;
 }
 
-.review-actions a:hover {
+.review-link {
+    color: #8884a0;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-size: 80%;
+    cursor: pointer;
+}
+
+.review-link:hover {
     color: #6d28d9;
 }

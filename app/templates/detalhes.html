@@ -79,8 +79,10 @@
           <p class="review-text">{{ review.comentario }}</p>
           <div class="review-actions">
             {% if session.get('usuario_id') == review.id_usuario %} 
-              <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id, editar=review.id)}}">Editar</a>
-              <a href="#">Excluir</a>
+              <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id, editar=review.id)}}" class="review-link">Editar</a>
+              <form action="{{ url_for('usuario.deletar', review_id=review.id)}}" method="POST">
+                <button class="review-link" type="submit">Excluir</button>
+              </form>
             {% endif %}
           </div>
         </div>

@@ -19,12 +19,5 @@ def usuario_ja_avaliou(id_usuario: str, id_jogo:str) -> bool:
             return True
     return False
 
-def busca_review(id_review: str) -> dict:
-    reviews = ler_csv(ARQUIVO_REVIEWS)
-    for review in reviews:
-        if id_review == review['id']:
-            return review
-    return None
-
 def usuario_pode_editar(id_usuario:str, review: dict) -> bool:
     return id_usuario == review['id_usuario']
