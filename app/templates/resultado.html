@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Resultado da busca - SEMAG{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/resultado.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="resultado-page">
+  <div class="resultado-header">
+    <h1>Resultado da busca</h1>
+
+    <form class="resultado-form" action="{{ url_for('main.resultado') }}" method="GET">
+      <input type="text" name="q" class="resultado-input" placeholder="Buscar jogo pelo nome..." value="{{ busca or '' }}">
+      <button type="submit" class="resultado-btn">Buscar</button>
+    </form>
+  </div>
+
+  {% if busca %}
+    {% if jogos %}
+      <div class="resultado-info">
+        <h2>Jogos encontrados para "{{ busca }}"</h2>
+      </div>
+
+      <div class="resultado-grid">
+        {% for jogo in jogos %}
+          <a href="{{ url_for('usuario.detalhes', jogo_id=jogo.id) }}" class="jogo-card">
+            <img src="{{ jogo.cover_url }}" alt="Capa do jogo {{ jogo.title }}" class="jogo-capa">
+
+            <div class="jogo-dados">
+              <h3>{{ jogo.title }}</h3>
+
+              <p class="jogo-nota">
+                ★ {{ jogo.nota_usuarios if jogo.nota_usuarios is not none else '-' }}
+              </p>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="resultado-vazio">
+        <h2>Jogo não encontrado</h2>
+        <p>Nenhum jogo corresponde à pesquisa "{{ busca }}".</p>
+      </div>
+    {% endif %}
+  {% endif %}
+</section>
+{% endblock %}
