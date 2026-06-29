@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash
 from app.services.csv_service import ler_csv, adicionar_linha, gerar_id, escrever_csv
 from app.services.user_service import ARQUIVOS_JOGOS, ARQUIVO_REVIEWS, COLUNAS_REVIEWS
-from app.services.reviews_service import calcular_nota, usuario_ja_avaliou, usuario_pode_editar, busca_review
+from app.services.reviews_service import calcular_nota, usuario_ja_avaliou, usuario_pode_editar
 
 usuario = Blueprint('usuario', __name__)
 
@@ -97,7 +97,6 @@ def detalhes(jogo_id):
     jogo['nota_usuarios'] = calcular_nota(jogo['id'])
 
     ja_avaliou = usuario_ja_avaliou(session.get('usuario_id'), jogo_id)
-    print(ja_avaliou)
     review_editando = None
 
     if review_id:
@@ -159,8 +158,8 @@ def editar(review_id):
 
             if not usuario_pode_editar(session.get('usuario_id'), r):
                 flash('Você não tem permissão para editar essa avaliação.', 'geral')
-
                 return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+            
             if not nota or int(nota) == 0:
                 flash('Selecione uma nota antes de salvar!', 'geral')
                 return redirect(url_for('usuario.detalhes', jogo_id=jogo_id, review_id=review_id))
@@ -175,4 +174,32 @@ def editar(review_id):
 
     escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, reviews)
     flash('Avaliação editada com sucesso!', 'geral')
+    return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+
+@usuario.route('/deletar/<review_id>', methods=['POST'])
+def deletar(review_id):
+    if not session.get('usuario_id'):
+        return redirect(url_for('main.index', modal='register'))
+
+    review_encontrada = False
+    reviews = ler_csv(ARQUIVO_REVIEWS)
+    novas_reviews = []
+    for r in reviews:
+        if r['id'] == review_id:
+            review_encontrada = True
+            jogo_id = r['id_jogo']
+
+            if not usuario_pode_editar(session.get('usuario_id'), r):
+                flash('Você não tem permissão para excluir essa avaliação.', 'geral')
+                return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+            
+            continue
+        novas_reviews.append(r)
+    
+    if not review_encontrada:
+        flash('Essa avaliação não existe.', 'geral')
+        return redirect(url_for('usuario.pg_principal'))
+
+    escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, novas_reviews)
+    flash('Avaliação excluída com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
