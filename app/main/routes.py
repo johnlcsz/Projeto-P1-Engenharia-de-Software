@@ -72,3 +72,26 @@ def logout():
     session.clear()
     flash('Você se desconectou da conta.', 'geral')
     return redirect(url_for('main.index'))
+
+@main.route('/resultado')
+def resultado():
+    busca = request.args.get('q', '').strip()
+
+    jogos = ler_csv(ARQUIVOS_JOGOS)
+
+    if busca:
+        jogos_filtrados = [
+            jogo for jogo in jogos
+            if busca.lower() in jogo.get('title', '').lower()
+        ]
+    else:
+        jogos_filtrados = []
+
+    for jogo in jogos_filtrados:
+        jogo['nota_usuarios'] = calcular_nota(jogo['id'])
+
+    return render_template(
+        'resultado.html',
+        busca=busca,
+        jogos=jogos_filtrados
+    )

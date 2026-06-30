@@ -11,17 +11,22 @@
 <body>
 
     <header>
-        <a href="{{ url_for('main.index') }}" class="logo">SEMAG</a>
-        <nav class="nav-links">
 
-            <div class="explorar">
-                <button class="nav-link" id="btn-explorar">Explorar</button>
-                <div class="search-bar" id="search-bar">
-                    <input type="text" class="search-input" id="search-input" placeholder="Buscar jogos...">
-                    <button class="search-fechar" id="search-fechar">✕</button>
-                </div>
-            </div>
+        {% if session.get('usuario_id') %}
+            <a href="{{ url_for('usuario.pg_principal') }}" class="logo">SEMAG</a>
+        {% else %}
+            <a href="{{ url_for('main.index') }}" class="logo">SEMAG</a>
+        {% endif %}
         
+        <nav class="nav-links">
+            <div class="explorar">
+                <button class="nav-link" id="btn-explorar" type="button">Explorar</button>
+                <form class="search-bar" id="search-bar" action="{{ url_for('main.resultado') }}" method="GET">
+                    <input type="text" class="search-input" id="search-input" name="q" placeholder="Buscar jogos..." required>
+                    <button class="search-fechar" id="search-fechar" type="button">✕</button>
+                </form>
+            </div>
+
             {% if session.get('usuario_id') %}
                 <a href="#" class="nav-link">Perfil</a>
                 <a href="/logout" class="btn-outline">Sair</a>
