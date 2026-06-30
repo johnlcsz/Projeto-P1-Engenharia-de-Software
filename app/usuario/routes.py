@@ -199,3 +199,42 @@ def deletar(review_id):
     escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, novas_reviews)
     flash('Avaliação excluída com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+
+@usuario.route('/perfil')
+def perfil():
+    
+    usuario_id = session.get('usuario_id')
+    if not usuario_id:
+        flash('Você precisa estar logado para acessar o perfil.', 'geral')
+        return redirect(url_for('main.index'))
+
+    todos_jogos = ler_csv(ARQUIVOS_JOGOS)
+    try:
+        todas_reviews = ler_csv(ARQUIVO_REVIEWS)
+    except FileNotFoundError:
+        todas_reviews = []
+
+    reviews_usuario = [r for r in todas_reviews if r['id_usuario'] == str(usuario_id)]
+
+    mapa_jogos = {jogo['id']: jogo for jogo in todos_jogos}
+
+    avaliacoes_completas = []
+    for review in reviews_usuario:
+        jogo_correspondente = mapa_jogos.get(review['id_jogo'])
+        if jogo_correspondente:
+            avaliacoes_completas.append({
+                'review_id': review['id'],
+                'nota': review['nota'],
+                'comentario': review['comentario'],
+                'jogo_id': jogo_correspondente['id'],
+                'titulo': jogo_correspondente['title'],
+                'capa_url': jogo_correspondente['cover_url']
+            })
+
+    stats = _get_stats(usuario_id)
+
+    return render_template(
+        'perfil.html',
+        stats=stats,
+        avaliacoes=avaliacoes_completas
+    )
