@@ -59,14 +59,14 @@ def pg_principal():
         genero_ativo=genero_ativo,
         stats=stats
     )
-
+#APAGAR ROTA E HTML
 @usuario.route('/biblioteca')
 def biblioteca():
     if not session.get('usuario_id'):
         return redirect(url_for('main.index'))
     return render_template('biblioteca.html')
 
-
+#APAGAR ROTA E HTML
 @usuario.route('/reviews')
 def reviews():
     if not session.get('usuario_id'):
@@ -198,3 +198,43 @@ def deletar(review_id):
     escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, novas_reviews)
     flash('Avaliação excluída com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
+
+
+    # Rota para o perfil
+@usuario.route('/perfil')
+def perfil():
+    if not session.get('usuario_id'):
+        return redirect(url_for('main.index'))
+
+    jogos = ler_csv(ARQUIVOS_JOGOS)
+    try:
+        reviews_csv = ler_csv(ARQUIVO_REVIEWS)
+        reviews_usuario = [r for r in reviews_csv if r['id_usuario'] == str(session['usuario_id'])]
+    except FileNotFoundError:
+        reviews_usuario = []
+
+    ids_avaliados = {r['id_jogo'] for r in reviews_usuario}
+    jogos_avaliados = [j for j in jogos if j['id'] in ids_avaliados]
+
+    reviews_com_jogo = []
+    for r in reviews_usuario:
+        jogo_da_review = next((j for j in jogos if j['id'] == r['id_jogo']), None)
+        if jogo_da_review:
+            reviews_com_jogo.append({
+                'jogo': jogo_da_review,
+                'nota': r['nota'],
+                'comentario': r['comentario']
+            })
+
+    if reviews_usuario:
+        media = sum(float(r['nota']) for r in reviews_usuario) / len(reviews_usuario)
+        media_notas = round(media, 1)
+    else:
+        media_notas = 0
+
+    return render_template(
+        'perfil.html',
+        jogos_avaliados=jogos_avaliados,
+        reviews=reviews_com_jogo,
+        media_notas=media_notas
+    )
