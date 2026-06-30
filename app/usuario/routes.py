@@ -59,19 +59,7 @@ def pg_principal():
         genero_ativo=genero_ativo,
         stats=stats
     )
-#APAGAR ROTA E HTML
-@usuario.route('/biblioteca')
-def biblioteca():
-    if not session.get('usuario_id'):
-        return redirect(url_for('main.index'))
-    return render_template('biblioteca.html')
 
-#APAGAR ROTA E HTML
-@usuario.route('/reviews')
-def reviews():
-    if not session.get('usuario_id'):
-        return redirect(url_for('main.index'))
-    return render_template('reviews.html')
 
 @usuario.route('/jogo/<int:jogo_id>')
 def detalhes(jogo_id):

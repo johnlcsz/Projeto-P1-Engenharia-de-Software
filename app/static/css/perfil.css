@@ -101,7 +101,7 @@
     background: #16161d;
     border: 0.5px solid #2a2a3a;
     border-radius: 10px;
-    padding: 9px 13px;
+    padding: 14px 16px;
     transition: border-color .2s;
 }
 
@@ -110,8 +110,8 @@
 }
 
 .bib-cover {
-    width: 34px;
-    height: 46px;
+    width: 46px;
+    height: 62px;
     border-radius: 5px;
     object-fit: cover;
     flex-shrink: 0;
@@ -125,7 +125,7 @@
 }
 
 .bib-nome {
-    font-size: 12.5px;
+    font-size: 14px;
     color: #ede9fe;
     font-weight: 600;
     white-space: nowrap;
@@ -134,7 +134,7 @@
 }
 
 .bib-genero {
-    font-size: 10.5px;
+    font-size: 12px;
     color: #8884a0;
 }
 
@@ -155,7 +155,7 @@
 .tabela-reviews {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12.5px;
+    font-size: 14px;
 }
 
 .tabela-reviews thead {
@@ -166,15 +166,15 @@
     text-align: left;
     color: #8884a0;
     font-weight: 600;
-    font-size: 10px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: .6px;
-    padding: 11px 14px;
+    padding: 13px 16px;
     border-bottom: 0.5px solid #2a2a3a;
 }
 
 .tabela-reviews tbody td {
-    padding: 13px 14px;
+    padding: 16px;
     border-bottom: 0.5px solid #232330;
     color: #ede9fe;
     vertical-align: middle;
@@ -197,8 +197,8 @@
 }
 
 .td-cover-mini {
-    width: 24px;
-    height: 32px;
+    width: 32px;
+    height: 42px;
     border-radius: 4px;
     object-fit: cover;
 }

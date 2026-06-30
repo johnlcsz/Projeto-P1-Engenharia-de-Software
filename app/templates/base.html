@@ -28,7 +28,7 @@
             </div>
 
             {% if session.get('usuario_id') %}
-                <a href="{ url_for('usuario.perfil')}" class="nav-link">Perfil</a>
+                <a href="{{ url_for('usuario.perfil') }}" class="nav-link">Perfil</a>
                 <a href="/logout" class="btn-outline">Sair</a>
             {% else %}
                 <button class="btn-outline" id="btn-login">Entrar</button>

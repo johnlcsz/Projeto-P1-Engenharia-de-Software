@@ -22,7 +22,7 @@
       <p class="det-rating">★ {{ jogo.nota_usuarios if jogo.nota_usuarios is not none else '-' }} <span class="det-rating-label">/ 5</span></p>
       <p class="det-desc">{{ jogo.description }}</p>
       {% if not session.get('usuario_id') %}
-        <button class="det-btn" id="btn-login">Entre para avaliar</button>
+        <button class="det-btn" id="btn-cadastro-det">Entre para avaliar</button>
       {% endif %}
     </div>
   </section>
