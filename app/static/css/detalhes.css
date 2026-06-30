@@ -243,16 +243,36 @@
 }
 
 .review-link {
-    color: #8884a0;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    font-size: 80%;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
 }
 
-.review-link:hover {
-    color: #6d28d9;
+/* EDITAR (botão) */
+.review-actions a.review-link {
+    color: #a78bfa;
+    border-color: #a78bfa;
+}
+
+.review-actions a.review-link:hover {
+    background: #a78bfa;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* EXCLUIR (botão) */
+.review-actions form .review-link {
+    color: #f87171;
+    border-color: #f87171;
+}
+
+.review-actions form .review-link:hover {
+    background: #f87171;
+    color: #fff;
+    transform: scale(1.05);
 }
