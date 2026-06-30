@@ -66,11 +66,6 @@ def biblioteca():
         return redirect(url_for('main.index'))
     return render_template('biblioteca.html')
 
-@usuario.route('/watchlist')
-def watchlist():
-    if not session.get('usuario_id'):
-        return redirect(url_for('main.index'))
-    return render_template('watchlist.html')
 
 @usuario.route('/reviews')
 def reviews():
