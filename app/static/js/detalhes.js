@@ -42,7 +42,6 @@ const btnCadastroDet = document.getElementById('btn-cadastro-det')
 
 if (btnCadastroDet) {
     btnCadastroDet.addEventListener('click', () => {
-        const modal = document.getElementById('modal-cadastro')
-        if (modal) modal.classList.add('active')
+        window.location.href = '/?modal=register'
     })
 }

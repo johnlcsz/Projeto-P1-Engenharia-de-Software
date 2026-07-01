@@ -17,10 +17,7 @@
         <span class="stat-num">{{ stats.jogados }}</span>
         <span class="stat-label">Jogados</span>
       </div>
-      <div class="stat-card">
-        <span class="stat-num">{{ stats.quero_jogar }}</span>
-        <span class="stat-label">Quero jogar</span>
-      </div>
+      
       <div class="stat-card">
         <span class="stat-num">{{ stats.reviews }}</span>
         <span class="stat-label">Reviews</span>
@@ -32,13 +29,13 @@
 <section class="acesso-rapido">
   <h2 class="section-title">Acesso rápido</h2>
   <div class="acao-grid">
-    <a href="{{ url_for('usuario.biblioteca') }}" class="acao-card">
+    <a href="{{ url_for('usuario.perfil') }}#biblioteca" class="acao-card">
       <span class="acao-icone">🎮</span>
       <span class="acao-titulo">Minha biblioteca</span>
       <span class="acao-desc">Jogos que você zerou</span>
     </a>
 
-    <a href="{{ url_for('usuario.reviews') }}" class="acao-card">
+    <a href="{{ url_for('usuario.perfil') }}#reviews" class="acao-card">
       <span class="acao-icone">⭐</span>
       <span class="acao-titulo">Minhas reviews</span>
       <span class="acao-desc">Avaliações que você fez</span>
