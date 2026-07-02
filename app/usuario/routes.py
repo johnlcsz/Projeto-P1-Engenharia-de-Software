@@ -186,12 +186,11 @@ def deletar(review_id):
     escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, novas_reviews)
     flash('Avaliação excluída com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
-
-
-    # Rota para o perfil
 @usuario.route('/perfil')
 def perfil():
+    
     if not session.get('usuario_id'):
+        flash('Você precisa estar logado para acessar o perfil.', 'geral')
         return redirect(url_for('main.index'))
 
     jogos = ler_csv(ARQUIVOS_JOGOS)
