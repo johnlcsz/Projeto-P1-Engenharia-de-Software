@@ -41,7 +41,9 @@
     {% with mensagens = get_flashed_messages(category_filter=['geral']) %}
         {% if mensagens %}
             {% for mensagem in mensagens %}
+            <div class="flash-container">
                 <div class="flash">{{ mensagem }}</div>
+            </div>
             {% endfor %}
         {% endif %}
     {% endwith %}

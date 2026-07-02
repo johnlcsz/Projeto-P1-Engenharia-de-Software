@@ -3,7 +3,7 @@
     align-items: center;
     gap: 24px;
     padding: 32px;
-    margin-top: 56px;
+    margin-top: 15px;
     background: linear-gradient(135deg, #1a0a2e 0%, #16161d 60%, #0f0f13 100%);
     border-bottom: 0.5px solid #2a2a3a;
 }
@@ -20,6 +20,7 @@
     font-weight: 700;
     color: #fff;
     flex-shrink: 0;
+    margin-top: 20px;
 }
 
 .boas-vindas-titulo {
@@ -27,6 +28,7 @@
     font-weight: 700;
     color: #fff;
     margin-bottom: 4px;
+    margin-top: 20px;
 }
 
 .boas-vindas-sub {

@@ -315,6 +315,14 @@ footer {
     border-radius: 6px;
 }
 
+.flash-container { 
+    margin-top: 70px; 
+    margin-bottom: 5px; 
+    display: flex; 
+    text-align: center; 
+    justify-content: center; 
+}
+
 .flash-modal {
     background: #2a1a1a;
     border-left: 3px solid #e74c3c;
