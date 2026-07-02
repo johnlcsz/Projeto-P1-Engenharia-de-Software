@@ -191,9 +191,7 @@
 .td-jogo {
     font-weight: 600;
     white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    vertical-align: middle;
 }
 
 .td-cover-mini {
@@ -201,6 +199,8 @@
     height: 42px;
     border-radius: 4px;
     object-fit: cover;
+    vertical-align: middle;
+    margin-right: 10px;
 }
 
 .td-nota {

@@ -83,48 +83,6 @@
     background: #2a2a3a;
 }
 
-.acesso-rapido {
-    padding: 28px 32px;
-}
-
-.acao-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.acao-card {
-    background: #16161d;
-    border: 0.5px solid #2a2a3a;
-    border-radius: 10px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    text-decoration: none;
-    transition: border-color 0.2s, background 0.2s;
-}
-
-.acao-card:hover {
-    border-color: #7c3aed;
-    background: #1e1e2a;
-}
-
-.acao-icone {
-    font-size: 20px;
-    margin-bottom: 4px;
-}
-
-.acao-titulo {
-    font-size: 13px;
-    font-weight: 600;
-    color: #ede9fe;
-}
-
-.acao-desc {
-    font-size: 11px;
-    color: #8884a0;
-}
 
 .divisor {
     height: 0.5px;
