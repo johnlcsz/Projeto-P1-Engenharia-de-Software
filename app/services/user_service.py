@@ -1,5 +1,6 @@
 from app.services.csv_service import *
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.services.log import registrar_log
 
 #Constantes do caminho dos arquivos CSV
 ARQUIVO_USUARIOS = 'data/usuarios.csv'
@@ -11,6 +12,9 @@ COLUNAS_USUARIOS = ['id', 'nome', 'email', 'senha_hash']
 COLUNAS_REVIEWS = ['id', 'id_usuario', 'autor' , 'id_jogo', 'nota', 'comentario']
 
 def busca_usuario_email(email:str) -> dict:
+    '''
+    Procura usuário a partir do email.
+    '''
     usuarios = ler_csv(ARQUIVO_USUARIOS)
     for usuario in usuarios:
         if usuario['email'] == email:
@@ -83,5 +87,5 @@ def criar_usuario(nome: str, email: str, senha: str) -> str:
         'senha_hash': senha_hash
     }
     adicionar_linha(ARQUIVO_USUARIOS, COLUNAS_USUARIOS, usuario)
-
+    registrar_log(f'Cadastro realizado: usuário={nome}')
     return novo_id

@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
 from app.services.user_service import *
-from app.services.csv_service import gerar_id, ler_csv
+from app.services.csv_service import ler_csv
 from app.services.reviews_service import calcular_nota
+from app.services.log import registrar_log
 
 main = Blueprint('main', __name__)
 
@@ -61,6 +62,7 @@ def login():
         session['usuario_nome'] = usuario['nome']
         flash('Você fez login com sucesso!', 'geral')
 
+        registrar_log(f'Login realizado: usuário={session['usuario_nome']}')
         return redirect(url_for('usuario.pg_principal'))
     
     flash('Email ou senha inválidos.', 'login')
