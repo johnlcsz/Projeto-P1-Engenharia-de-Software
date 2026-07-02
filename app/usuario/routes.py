@@ -12,8 +12,6 @@ def _get_stats(usuario_id: str) -> dict:
     except FileNotFoundError:
         reviews_usuario = []
     return {
-        'jogados': 0,
-        'quero_jogar': 0,
         'reviews': len(reviews_usuario)
     }
 
