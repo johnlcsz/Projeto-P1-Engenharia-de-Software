@@ -60,19 +60,6 @@ def pg_principal():
         stats=stats
     )
 
-@usuario.route('/biblioteca')
-def biblioteca():
-    if not session.get('usuario_id'):
-        return redirect(url_for('main.index'))
-    return render_template('biblioteca.html')
-
-
-
-@usuario.route('/reviews')
-def reviews():
-    if not session.get('usuario_id'):
-        return redirect(url_for('main.index'))
-    return render_template('reviews.html')
 
 @usuario.route('/jogo/<int:jogo_id>')
 def detalhes(jogo_id):
@@ -199,42 +186,42 @@ def deletar(review_id):
     escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, novas_reviews)
     flash('Avaliação excluída com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
-
 @usuario.route('/perfil')
 def perfil():
     
-    usuario_id = session.get('usuario_id')
-    if not usuario_id:
+    if not session.get('usuario_id'):
         flash('Você precisa estar logado para acessar o perfil.', 'geral')
         return redirect(url_for('main.index'))
 
-    todos_jogos = ler_csv(ARQUIVOS_JOGOS)
+    jogos = ler_csv(ARQUIVOS_JOGOS)
     try:
-        todas_reviews = ler_csv(ARQUIVO_REVIEWS)
+        reviews_csv = ler_csv(ARQUIVO_REVIEWS)
+        reviews_usuario = [r for r in reviews_csv if r['id_usuario'] == str(session['usuario_id'])]
     except FileNotFoundError:
-        todas_reviews = []
+        reviews_usuario = []
 
-    reviews_usuario = [r for r in todas_reviews if r['id_usuario'] == str(usuario_id)]
+    ids_avaliados = {r['id_jogo'] for r in reviews_usuario}
+    jogos_avaliados = [j for j in jogos if j['id'] in ids_avaliados]
 
-    mapa_jogos = {jogo['id']: jogo for jogo in todos_jogos}
-
-    avaliacoes_completas = []
-    for review in reviews_usuario:
-        jogo_correspondente = mapa_jogos.get(review['id_jogo'])
-        if jogo_correspondente:
-            avaliacoes_completas.append({
-                'review_id': review['id'],
-                'nota': review['nota'],
-                'comentario': review['comentario'],
-                'jogo_id': jogo_correspondente['id'],
-                'titulo': jogo_correspondente['title'],
-                'capa_url': jogo_correspondente['cover_url']
+    reviews_com_jogo = []
+    for r in reviews_usuario:
+        jogo_da_review = next((j for j in jogos if j['id'] == r['id_jogo']), None)
+        if jogo_da_review:
+            reviews_com_jogo.append({
+                'jogo': jogo_da_review,
+                'nota': r['nota'],
+                'comentario': r['comentario']
             })
 
-    stats = _get_stats(usuario_id)
+    if reviews_usuario:
+        media = sum(float(r['nota']) for r in reviews_usuario) / len(reviews_usuario)
+        media_notas = round(media, 1)
+    else:
+        media_notas = 0
 
     return render_template(
         'perfil.html',
-        stats=stats,
-        avaliacoes=avaliacoes_completas
+        jogos_avaliados=jogos_avaliados,
+        reviews=reviews_com_jogo,
+        media_notas=media_notas
     )

@@ -1,2 +1,1 @@
 id,nome,email,senha_hash
-1,abc,abc@gmail.com,scrypt:32768:8:1$uomQKRMTuyZ1Pqqu$13dcad08bc07de75a2a4f1b09bd498a13793af9a0ed2f842cca8ffa4e0cdecc8f6b2d7330624e77c7f49f3965536928f442f1b01af7574cc9a712ee35b6a14e2

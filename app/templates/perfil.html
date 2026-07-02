@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Início — SEMAG{% endblock %}
+{% block title %}Meu Perfil — SEMAG{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -14,36 +14,75 @@
     <p class="boas-vindas-sub">Bem-vindo de volta ao SEMAG</p>
     <div class="boas-vindas-stats">
       <div class="stat-card">
-        <span class="stat-num">{{ stats.jogados }}</span>
+        <span class="stat-num">{{ jogos_avaliados|length }}</span>
         <span class="stat-label">Jogados</span>
       </div>
       <div class="stat-card">
-        <span class="stat-num">{{ stats.quero_jogar }}</span>
-        <span class="stat-label">Quero jogar</span>
+        <span class="stat-num">{{ reviews|length }}</span>
+        <span class="stat-label">Reviews</span>
       </div>
       <div class="stat-card">
-        <span class="stat-num">{{ stats.reviews }}</span>
-        <span class="stat-label">Reviews</span>
+        <span class="stat-num">{{ media_notas }}</span>
+        <span class="stat-label">Média dada</span>
       </div>
     </div>
   </div>
 </section>
 
-<section class="acesso-rapido">
-  <h2 class="section-title">Acesso rápido</h2>
-  <div class="acao-grid">
-    <a href="{{ url_for('usuario.biblioteca') }}" class="acao-card">
-      <span class="acao-icone">🎮</span>
-      <span class="acao-titulo">Minha biblioteca</span>
-      <span class="acao-desc">Jogos que você zerou</span>
-    </a>
+<section class="section" id="biblioteca">
+  <h2 class="stitle">Minha biblioteca</h2>
+  {% if jogos_avaliados %}
+  <ul class="biblioteca-lista">
+    {% for jogo in jogos_avaliados %}
+    <li class="biblioteca-item">
+      <img src="{{ jogo.cover_url }}" alt="{{ jogo.title }}" class="bib-cover"
+           onerror="this.src=this.dataset.fallback"
+           data-fallback="{{ url_for('static', filename='images/placeholder.png') }}">
+      <div class="bib-text">
+        <span class="bib-nome">{{ jogo.title }}</span>
+        <span class="bib-genero">{{ jogo.genre.split('|')[0] }}</span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="vazio">Você ainda não avaliou nenhum jogo.</p>
+  {% endif %}
+</section>
 
-    <a href="{{ url_for('usuario.reviews') }}" class="acao-card">
-      <span class="acao-icone">⭐</span>
-      <span class="acao-titulo">Minhas reviews</span>
-      <span class="acao-desc">Avaliações que você fez</span>
-    </a>
+<div class="divisor"></div>
+
+<section class="section" id="reviews">
+  <h2 class="stitle">Avaliações feitas</h2>
+  {% if reviews %}
+  <div class="tabela-wrap">
+    <table class="tabela-reviews">
+      <thead>
+        <tr>
+          <th>Jogo</th>
+          <th>Nota</th>
+          <th>Comentário</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in reviews %}
+        <tr>
+          <td class="td-jogo">
+            <img src="{{ review.jogo.cover_url }}" alt="{{ review.jogo.title }}" class="td-cover-mini"
+                 onerror="this.src=this.dataset.fallback"
+                 data-fallback="{{ url_for('static', filename='images/placeholder.png') }}">
+            {{ review.jogo.title }}
+          </td>
+          <td class="td-nota">★ {{ review.nota }}</td>
+          <td class="td-comentario">{{ review.comentario }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
+  {% else %}
+  <p class="vazio">Você ainda não fez nenhuma avaliação.</p>
+  {% endif %}
 </section>
 
 {% endblock %}
