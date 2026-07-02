@@ -1,0 +1,7 @@
+[01/07/2026 23:29:59] Login realizado: usuário=max
+[01/07/2026 23:30:16] Cadastro realizado: usuário=joao
+[01/07/2026 23:30:39] Avaliação criada: usuário=2 jogo=3 nota=5
+[01/07/2026 23:32:41] Cadastro realizado: usuário=max
+[01/07/2026 23:33:05] Avaliação criada: usuário=max jogo=1 nota=5
+[01/07/2026 23:33:20] Avaliação editada: usuário=max review=1
+[01/07/2026 23:33:25] Avaliação excluída: usuário=max review=1

@@ -2,10 +2,14 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from app.services.csv_service import ler_csv, adicionar_linha, gerar_id, escrever_csv
 from app.services.user_service import ARQUIVOS_JOGOS, ARQUIVO_REVIEWS, COLUNAS_REVIEWS
 from app.services.reviews_service import calcular_nota, usuario_ja_avaliou, usuario_pode_editar
+from app.services.log import registrar_log
 
 usuario = Blueprint('usuario', __name__)
 
 def _get_stats(usuario_id: str) -> dict:
+    '''
+    Retorna estatísticas relacionadas às avaliações do usuário.
+    '''
     try:
         reviews = ler_csv(ARQUIVO_REVIEWS)
         reviews_usuario = [r for r in reviews if r['id_usuario'] == str(usuario_id)]
@@ -18,6 +22,9 @@ def _get_stats(usuario_id: str) -> dict:
     }
 
 def _get_generos(jogos: list[dict]) -> set:
+    '''
+    Retorna uma lista ordenada de gêneros disponíveis no catálogo, sem repetições.
+    '''
     generos = set()
     for jogo in jogos:
         for g in jogo['genre'].split('|'):
@@ -25,6 +32,9 @@ def _get_generos(jogos: list[dict]) -> set:
     return sorted(generos)
 
 def _get_populares(jogos: list[dict], limite=5) -> list[dict]:
+    '''
+    Retorna os jogos mais populares a partir da média das notas dadas pelos usuários.
+    '''
     ordenados = sorted(jogos, key=lambda j: float(j['nota_usuarios']) if j['nota_usuarios'] is not None else 0, reverse=True)
     return ordenados[:limite]
 
@@ -121,6 +131,8 @@ def avaliar(jogo_id):
     }
 
     adicionar_linha(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, nova_review)
+    registrar_log(f'Avaliação criada: usuário={session['usuario_nome']} jogo={jogo_id} nota={nota}')
+
     flash('Avaliação publicada com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
 
@@ -156,6 +168,8 @@ def editar(review_id):
         return redirect(url_for('usuario.pg_principal'))
 
     escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, reviews)
+    registrar_log(f'Avaliação editada: usuário={session['usuario_nome']} review={review_id}')
+
     flash('Avaliação editada com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
 
@@ -184,6 +198,8 @@ def deletar(review_id):
         return redirect(url_for('usuario.pg_principal'))
 
     escrever_csv(ARQUIVO_REVIEWS, COLUNAS_REVIEWS, novas_reviews)
+    registrar_log(f'Avaliação excluída: usuário={session['usuario_nome']} review={review_id}')
+
     flash('Avaliação excluída com sucesso!', 'geral')
     return redirect(url_for('usuario.detalhes', jogo_id=jogo_id))
 
